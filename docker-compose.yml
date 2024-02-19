@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  dam:
+    build: .
+    ports:
+      - "5006:5006"
+
