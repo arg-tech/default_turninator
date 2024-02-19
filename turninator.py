@@ -17,16 +17,12 @@ class Turninator():
 		text = re.sub('<.*?>','',text, flags=re.DOTALL)
 		return re.findall(r'([A-Za-z ]+): (.+\n)', text)
 
-
 	def monolog_text(self, text: str) -> str:
 		''' get the entire text if monolog
 		'''
 		text = re.sub('<.*?>','',text, flags=re.DOTALL)
 		return text
-
-
-
-
+	
 	def is_json(self, file: str) -> bool:		
 		''' check if the file is valid json
 		'''
@@ -85,40 +81,17 @@ class Turninator():
 					text_with_span = ""
 					node_id,person_id = 0, 0			
 					speakers_and_turns = self.dialog_turns(text)
-					if is_dialog and len(speakers_and_turns): # is dialoge
-						speakers_and_turns = self.dialog_turns(text)
-						(nodes, 
-	   					locutions, 
-						participants, 
-						text_with_span, 
-						node_id, 
-						person_id) = AIF.create_turn_entry(nodes,
-										 				   node_id, 
-														   person_id,
-														   text_with_span,
-														   speakers_and_turns,
-														   locutions,
-														   participants,
-														   is_dialog
-														   )
 
+					if is_dialog and len(self.dialog_turns(text)):
+						speakers_and_turns = self.dialog_turns(text)
+						nodes, locutions, participants, text_with_span, node_id, person_id = AIF.create_turn_entry(
+							nodes,node_id, person_id, text_with_span, speakers_and_turns, locutions, participants, is_dialog)
 					else:  #monolog
 						if not is_dialog:
 							logging.info(f'processing monolog text')
 							speakers_and_turns = self.monolog_text(text)
-							(nodes, 
-							locutions, 
-							participants, 
-							text_with_span, 
-							node_id, 
-							person_id) = AIF.create_turn_entry(nodes,
-																node_id, 
-																person_id,
-																text_with_span,
-																speakers_and_turns,
-																locutions,
-																participants,							
-																is_dialog)
+							nodes, locutions, participants, text_with_span, node_id, person_id = AIF.create_turn_entry(
+								nodes, node_id, person_id, text_with_span,speakers_and_turns, locutions, participants, is_dialog)
 					json_aif.update( {'nodes' : nodes} )
 					json_aif.update( {'edges' : edges} )
 					json_aif.update( {'locutions' : locutions} )
@@ -143,21 +116,8 @@ class Turninator():
 						text_with_span=""
 						nodes, edges, schemefulfillments, descriptorfulfillments, participants, locutions =[], [], [], [], [], []
 						speakers_and_turns = self.monolog_text(text)					
-						(nodes, 
-	   					locutions, 
-						participants, 
-						text_with_span, 
-						node_id, 
-	   					person_id) = AIF.create_turn_entry(nodes,
-															node_id,
-															person_id, 
-															text_with_span,
-															speakers_and_turns,	
-															locutions,	
-															participants,										
-															False)
-
-
+						nodes, locutions, participants, text_with_span, node_id, person_id = AIF.create_turn_entry(
+							nodes, node_id, person_id, text_with_span, speakers_and_turns, locutions, participants,	False)
 						json_aif.update( {'nodes' : nodes} )
 						json_aif.update( {'edges' : edges} )
 						json_aif.update( {'locutions' : locutions} )
@@ -182,21 +142,8 @@ class Turninator():
 			text_with_span=""
 			nodes, edges, schemefulfillments, descriptorfulfillments, participants, locutions =[], [], [], [], [], []
 			speakers_and_turns = self.monolog_text(data)					
-			(nodes, 
-			locutions, 
-			participants, 
-			text_with_span, 
-			node_id, 
-			person_id) = AIF.create_turn_entry(nodes,
-												node_id, 
-												person_id,
-												text_with_span,
-												speakers_and_turns,	
-												locutions,	
-												participants,					
-												False)
-
-
+			nodes, locutions, participants, text_with_span, node_id, person_id = AIF.create_turn_entry(
+				nodes, node_id, person_id,text_with_span, speakers_and_turns, locutions, participants, False)
 			json_aif.update( {'nodes' : nodes} )
 			json_aif.update( {'edges' : edges} )
 			json_aif.update( {'locutions' : locutions} )
