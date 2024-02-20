@@ -99,7 +99,8 @@ class AIF:
         participants: List[Dict[str, str]]
         ) -> str:
         """
-        This function takes a node ID, a list of locutions, and a list of participants, and returns the name of the participant who spoke the locution with the given node ID, or "None" if the node ID is not found.
+        Takes a node ID, a list of locutions, and a list of participants, and returns the name of the participant who spoke the locution with the given node ID, or "None" 
+        if the node ID is not found.
 
         Arguments:
         - node_id (int): the node ID to search for
@@ -225,6 +226,23 @@ class AIF:
         edited_nodes = [node for node in edited_nodes if node.get('nodeID') != yn_id]
         # Return the edited JSON dictionary
         return edited_nodes, edited_edges, edited_locutions
+    
+
+    def get_xAIF_arrays(self, aif_section: dict, xaif_elements: List) -> tuple:
+        """
+        Extracts values associated with specified keys from the given AIF section dictionary.
+
+        Args:
+            aif_section (dict): A dictionary containing AIF section information.
+            xaif_elements (List): A list of keys for which values need to be extracted from the AIF section.
+
+        Returns:
+            tuple: A tuple containing values associated with the specified keys from the AIF section.
+        """
+        # Extract values associated with specified keys from the AIF section dictionary
+        # If a key is not present in the dictionary, returns an empty list as the default value
+        return tuple(aif_section.get(element) for element in xaif_elements)
+
 
 	
 
