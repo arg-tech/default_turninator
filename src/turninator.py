@@ -43,7 +43,7 @@ class Turninator():
                     if not isinstance(json_dict, dict):
                         json_dict = json.loads(json_dict)
                     # Extract values associated with specific keys from the AIF section
-                    schemefulfillments, descriptorfulfillments = AIF.get_xAIF_arrays(['schemefulfillments', descriptorfulfillments])
+                    schemefulfillments, descriptorfulfillments = AIF.get_xAIF_arrays(['schemefulfillments', 'descriptorfulfillments'])
                     participants = json_dict.get("participants", [])
                     if isinstance(extended_json_aif['text'], dict):
                         text = extended_json_aif['text']['txt']
