@@ -68,7 +68,9 @@ class Turninator():
                             speakers_and_turns = self.monolog_text(text)
                             nodes, locutions, participants, text_with_span, node_id, person_id = AIF.create_turn_entry(
                                 nodes, node_id, person_id, text_with_span, speakers_and_turns, locutions, participants, is_dialog)
-                    return TurninatorOutput.format_output(nodes, edges, locutions, schemefulfillments, descriptorfulfillments, participants, OVA, text_with_span, dialog)
+                    return TurninatorOutput.format_output(nodes, edges, locutions, 
+                                                          schemefulfillments, descriptorfulfillments, participants, 
+                                                          OVA, text_with_span, dialog, json_dict, extended_json_aif)
                 else:
                     if 'text' in extended_json_aif:
                         node_id, person_id = 0, 0
@@ -77,13 +79,13 @@ class Turninator():
                         else:
                             text = extended_json_aif['text'] + "\n"
                         
-                        json_aif, OVA = {}, {}        
+                        aif, json_aif, OVA = {}, {}, {}      
                         text_with_span = ""
                         nodes, edges, schemefulfillments, descriptorfulfillments, participants, locutions = [], [], [], [], [], []
                         speakers_and_turns = self.monolog_text(text)                   
                         nodes, locutions, participants, text_with_span, node_id, person_id = AIF.create_turn_entry(
                             nodes, node_id, person_id, text_with_span, speakers_and_turns, locutions, participants, False)
-                        return TurninatorOutput.format_output(nodes, edges, locutions, schemefulfillments, descriptorfulfillments, participants, OVA, text_with_span)
+                        return TurninatorOutput.format_output(nodes, edges, locutions, schemefulfillments, descriptorfulfillments, participants, OVA, text_with_span, aif, extended_json_aif)
             else:
                 logging.info(f'the file is not in a correct json format')
                 return "Invalid json"
@@ -91,10 +93,10 @@ class Turninator():
             # Non-json data is treated as monolog
             node_id, person_id = 0, 0
             data = open(path).read() + "\n"            
-            json_aif, OVA = {}, {}        
+            aif, json_aif, OVA = {}, {}, {}       
             text_with_span = ""
             nodes, edges, schemefulfillments, descriptorfulfillments, participants, locutions = [], [], [], [], [], []
             speakers_and_turns = self.monolog_text(data)                    
             nodes, locutions, participants, text_with_span, node_id, person_id = AIF.create_turn_entry(
                 nodes, node_id, person_id, text_with_span, speakers_and_turns, locutions, participants, False)
-            return TurninatorOutput.format_output(nodes, edges, locutions, schemefulfillments, descriptorfulfillments, participants, OVA, text_with_span)
+            return TurninatorOutput.format_output(nodes, edges, locutions, schemefulfillments, descriptorfulfillments, participants, OVA, text_with_span,aif, json_aif)
