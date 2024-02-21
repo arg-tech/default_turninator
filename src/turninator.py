@@ -4,8 +4,8 @@ import logging
 
 logging.basicConfig(datefmt='%H:%M:%S', level=logging.DEBUG)
 
-from data import AIF, Data
-from turninator_output import TurninatorOutput
+from src.data import AIF, Data
+from src.templates import TurninatorOutput
 
 class Turninator():
     def __init__(self) -> None:
@@ -25,15 +25,11 @@ class Turninator():
         data = Data(path_obj)
         path = data.get_file_path()
         extended_json_aif = {}
-        
-        # Check if the file ends with ".json"
         if path.endswith("json"):
             nodes, edges, locutions = [], [], []
             # Check if the file is a valid JSON file
             if data.is_valid_json():
-                # Get the AIF section from the data
                 extended_json_aif = data.get_aif()
-                # Check if 'AIF' and 'text' keys are present in the AIF section
                 if 'AIF' in extended_json_aif and 'text' in extended_json_aif:
                     json_dict = extended_json_aif['AIF'] 
                     dialog = extended_json_aif.get('dialog', False)
@@ -44,19 +40,16 @@ class Turninator():
                             json_dict = json_dict.replace("\"", "")
                             json_dict = dict(json_dict)
                     logging.info(f'processing monolog text')
-                    # Convert 'json_dict' to a dictionary if it's not already
                     if not isinstance(json_dict, dict):
                         json_dict = json.loads(json_dict)
                     # Extract values associated with specific keys from the AIF section
                     schemefulfillments, descriptorfulfillments = AIF.get_xAIF_arrays(['schemefulfillments', descriptorfulfillments])
                     participants = json_dict.get("participants", [])
-                    # Extract text from the AIF section
                     if isinstance(extended_json_aif['text'], dict):
                         text = extended_json_aif['text']['txt']
                     else:
                         text = extended_json_aif['text']  # gets the text
                         text = text + "\n"
-                    # Convert text to JSON object
                     if isinstance(text, str):
                         json_object = json.dumps(text)
                         json_object = json.loads(json_object)                    
