@@ -21,9 +21,9 @@ metrics = PrometheusMetrics(app)
 @handle_errors  
 def turninator_defult():
 	if request.method == 'POST':
-		file_obj = request.files.get('file')		
-		turninator = Turninator()
-		result=turninator.turninator_default(file_obj)
+		file_obj = request.files.get('file')	
+		turninator = Turninator(file_obj)
+		result=turninator.turninator_default()
 		return result	
 
 	if request.method == 'GET':
