@@ -43,7 +43,7 @@ class Turninator():
         if 'nodes' in aif_nodes and 'locutions' in aif_nodes and 'edges' in aif_nodes:
             return True
         return False
-        
+    ###
 
     def get_aif(self, format='xAIF'):
 
