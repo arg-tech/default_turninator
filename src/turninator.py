@@ -53,7 +53,7 @@ class Turninator():
             if format == "xAIF":
                 return x_aif
             else:
-                aif = x_aif.get('aif')
+                aif = x_aif.get('AIF')
                 return json.dumps(aif)
 
     def turninator_default(self,):
@@ -71,8 +71,8 @@ class Turninator():
             if is_json_file:				
                 nodes, edges, locutions = [], [], []
                 extended_json_aif = xaif_obj.xaif
-                if 'aif' in extended_json_aif and 'text' in extended_json_aif:
-                    json_dict = extended_json_aif['aif'] 
+                if 'AIF' in extended_json_aif and 'text' in extended_json_aif:
+                    json_dict = extended_json_aif['AIF'] 
                     dialog = extended_json_aif.get('dialog', False)
                     OVA = extended_json_aif.get('OVA', [])
                     # Handle the case where 'json_dict' is a string
