@@ -9,7 +9,7 @@ class TurninatorOutput:
         aif['schemefulfillments'] = schemefulfillments
         aif['descriptorfulfillments'] = descriptorfulfillments
         aif['participants'] =  participants
-        x_aif['aif'] = aif
+        x_aif['AIF'] = aif
         x_aif['ova'] =  OVA
         x_aif['dialog'] =  dialog
         x_aif['text'] =  {'txt': text_with_span}
