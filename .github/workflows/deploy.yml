@@ -17,6 +17,6 @@ jobs:
       # Specify the target production server
       target_production_server_nickname: argand
       # Define a URL for your app, without the http:// or www prefixes
-      full_app_url: default-turninator-01.amfws.arg.tech
+      full_app_url: default-turninator.amfws.arg.tech
       # The port that is exposed on localhost (must be the same as in docker-compose.yml) gg .. ..
       app_port: 5006
