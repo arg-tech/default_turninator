@@ -2,6 +2,7 @@ version: '3'
 
 services:
   dam:
+    container_name: Default_turninator  
     build: .
     ports:
       - "5006:5006"
