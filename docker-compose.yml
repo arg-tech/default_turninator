@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  turninator:
-    container_name: turninator  
+  default_turninator:
+    container_name: default_turninator  
     build: .
     ports:
       - "5006:5006"
