@@ -12,6 +12,7 @@ logging.basicConfig(datefmt='%H:%M:%S',
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://arg-tech.github.io"}})
+
 metrics = PrometheusMetrics(app)
 	
 @app.route('/turninator-01', methods = ['GET', 'POST'])
