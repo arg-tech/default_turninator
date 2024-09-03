@@ -7,6 +7,7 @@ RUN pip3 install tqdm
 RUN pip3 install Cython
 #RUN pip3 install xaif_eval
 RUN pip3 install xaif_eval==0.0.9
+RUN pip3 install flask-cors
 
 COPY . /app
 WORKDIR /app
