@@ -97,50 +97,10 @@ class Turninator():
                 return json.dumps(data)
             else:
                 # Extract and return the "aif" section or the entire data
-                aif = data.get('aif', data)
+                aif = data.get('AIF', data)
                 return json.dumps(aif)
 
-    def get_aif(self, format='xAIF'):
-        with open(self.f_name) as file:
-            data = file.read()
 
-            # Check if the file content is a valid JSON string (it might be a JSON object or an array)
-            try:
-                data = json.loads(data)  # Try to load it as a JSON object
-            except ValueError as e:
-                print(f"Error decoding JSON from file: {e}")
-                return None
-
-            # Function to handle string entries (decoding double escaping if needed)
-            def process_data(entry):
-                if isinstance(entry, str):
-                    try:
-                        # Try to decode the string if it's double-escaped JSON
-                        decoded = json.loads(entry)
-                        return decoded
-                    except ValueError:
-                        # If decoding fails, return the string as-is
-                        return entry
-                elif isinstance(entry, dict):
-                    # Process each key-value pair in the dictionary
-                    for key, value in entry.items():
-                        entry[key] = process_data(value)
-                elif isinstance(entry, list):
-                    # Process each item in the list
-                    for index, item in enumerate(entry):
-                        entry[index] = process_data(item)
-                return entry
-
-            # Process the entire data structure (file contents)
-            data = process_data(data)
-
-            # Convert the processed data back to JSON string if necessary
-            if format == "xAIF":
-                return json.dumps(data)
-            else:
-                # Extract 'aif' section from the data, if it exists
-                aif = data.get('aif', data)
-                return json.dumps(aif)
     def turninator_default(self,):
         # Get the file path from the path object
 
