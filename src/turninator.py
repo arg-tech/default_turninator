@@ -1,6 +1,8 @@
 import re
 from flask import json
 import logging
+# Explicitly import JSONDecodeError for better clarity
+from json.decoder import JSONDecodeError
 from xaif_eval import xaif
 
 logging.basicConfig(datefmt='%H:%M:%S', level=logging.DEBUG)
@@ -52,7 +54,7 @@ class Turninator():
         return False
     ###
 
-    def get_aif(self, format='xAIF'):
+    def get_aif_(self, format='xAIF'):
 
         with open(self.f_name) as file:
             data = file.read()
@@ -63,6 +65,47 @@ class Turninator():
             else:
                 aif = x_aif.get('aif')
                 return json.dumps(aif)
+
+    def get_aif(self, format='xAIF'):
+        """
+        This function reads the file, processes it, and returns the xAIF or AIF section in the correct format.
+        If the input file format is not valid, it attempts to correct it and then returns the desired format.
+        """
+        try:
+            # Open the file and read its contents
+            with open(self.f_name, 'r') as file:
+                data = file.read()
+                
+                # Try to load the data as JSON
+                try:
+                    x_aif = json.loads(data)
+                except JSONDecodeError as e:
+                    logging.error(f"Error decoding JSON: {e}")
+                    return {"error": "Invalid JSON format"}
+                
+                # Ensure x_aif is a dictionary, handle if it's a string
+                if isinstance(x_aif, str):
+                    try:
+                        x_aif = json.loads(x_aif)  # Try to load it again if it's a string
+                    except JSONDecodeError as e:
+                        logging.error(f"Error re-decoding JSON: {e}")
+                        return {"error": "Invalid JSON format after re-processing string"}
+                
+                # If format is "xAIF", return the whole xAIF structure
+                if format == "xAIF":
+                    return json.dumps(x_aif)
+                
+                # Otherwise, extract the 'aif' section, if available
+                aif = x_aif.get('aif')
+                if not aif:
+                    logging.warning("The 'aif' section is missing from the input JSON.")
+                    return {"error": "'aif' section is missing"}
+                
+                return json.dumps(aif)
+        
+        except Exception as e:
+            logging.error(f"An error occurred while processing the file: {e}")
+            return {"error": "Unexpected error occurred while processing the file"}
 
     def turninator_default(self,):
         # Get the file path from the path object
