@@ -67,6 +67,40 @@ class Turninator():
                 return json.dumps(aif)
 
     def get_aif(self, format='xAIF'):
+        def process_aif_key(data):
+            # Check if 'AIF' key exists in the data and if it's a string
+            if "AIF" in data and isinstance(data["AIF"], str):
+                try:
+                    # Try to parse the string value of 'AIF' into JSON
+                    parsed_aif = json.loads(data["AIF"])
+                    data["AIF"] = parsed_aif  # Update the AIF key with the parsed JSON object
+                except ValueError as e:
+                    print(f"Error decoding AIF value: {e}")
+                    # If decoding fails, keep the original string value (or handle as needed)
+                    pass
+            return data
+        with open(self.f_name) as file:
+            data = file.read()
+
+            try:
+                # Load the JSON data from the file
+                data = json.loads(data)
+            except ValueError as e:
+                print(f"Error decoding JSON from file: {e}")
+                return None
+
+            # Process the "AIF" key if it exists
+            data = process_aif_key(data)
+
+            # Format the response based on the required format
+            if format == "xAIF":
+                return json.dumps(data)
+            else:
+                # Extract and return the "aif" section or the entire data
+                aif = data.get('aif', data)
+                return json.dumps(aif)
+
+    def get_aif(self, format='xAIF'):
         with open(self.f_name) as file:
             data = file.read()
 
