@@ -57,6 +57,7 @@ class Turninator():
         with open(self.f_name) as file:
             data = file.read()
             x_aif = json.loads(data)
+            x_aif = json.dumps(x_aif)
             if format == "xAIF":
                 return x_aif
             else:
