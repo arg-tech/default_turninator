@@ -54,51 +54,37 @@ class Turninator():
         return False
     ###
 
-    def get_aif_(self, format='xAIF'):
-
-        with open(self.f_name) as file:
-            data = file.read()
-            x_aif = json.loads(data)
-            x_aif = json.dumps(x_aif)
-            if format == "xAIF":
-                return x_aif
-            else:
-                aif = x_aif.get('aif')
-                return json.dumps(aif)
-
     def get_aif(self, format='xAIF'):
-        def process_aif_key(data):
-            # Check if 'AIF' key exists in the data and if it's a string
-            if "AIF" in data and isinstance(data["AIF"], str):
-                try:
-                    # Try to parse the string value of 'AIF' into JSON
-                    parsed_aif = json.loads(data["AIF"])
-                    data["AIF"] = parsed_aif  # Update the AIF key with the parsed JSON object
-                except ValueError as e:
-                    print(f"Error decoding AIF value: {e}")
-                    # If decoding fails, keep the original string value (or handle as needed)
-                    pass
-            return data
-        with open(self.f_name) as file:
-            data = file.read()
-
-            try:
-                # Load the JSON data from the file
-                data = json.loads(data)
-            except ValueError as e:
-                print(f"Error decoding JSON from file: {e}")
-                return None
-
-            # Process the "AIF" key if it exists
-            data = process_aif_key(data)
-
-            # Format the response based on the required format
-            if format == "xAIF":
-                return json.dumps(data)
-            else:
-                # Extract and return the "aif" section or the entire data
-                aif = data.get('AIF', data)
-                return json.dumps(aif)
+        try:
+            # Open and read the file content
+            with open(self.f_name, 'r') as file:
+                data = file.read()  # Read the raw content
+                
+                print(f"Raw data read from file: {data}")  # Debugging step
+                
+                # Convert to Python dictionary (or JSON object)
+                x_aif = json.loads(data)  # Parse JSON string
+                
+                # If 'AIF' exists and is a string, convert it to a dictionary
+                if 'AIF' in x_aif and isinstance(x_aif['AIF'], str):
+                    try:
+                        x_aif['AIF'] = json.loads(x_aif['AIF'])  # Parse 'AIF' value
+                    except json.JSONDecodeError:
+                        print("Warning: 'AIF' value is not valid JSON.")
+                
+                print(f"Parsed JSON object with 'AIF' as JSON: {x_aif}")  # Debugging step
+                
+                # Return the modified dictionary
+                return x_aif
+        
+        except json.JSONDecodeError as e:
+            # Handle JSON errors gracefully
+            print(f"Error decoding JSON: {e}")
+            return None
+        except Exception as e:
+            # Handle other exceptions
+            print(f"An unexpected error occurred: {e}")
+            return None
 
 
     def turninator_default(self,):
