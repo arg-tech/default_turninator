@@ -1,0 +1,68 @@
+meta {
+  name: XAIF Minimal
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/turninator-01
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  Content-Type: multipart/form-data
+}
+
+body:multipart-form {
+  file: @file(test-inputs/xaif_minimal.json)
+}
+
+tests {
+  const expectedData =
+  {
+    "AIF": {
+      "nodes": [
+        {
+          "text": "This is a sample argument text that will be processed by the turninator.",
+          "type": "L",
+          "nodeID": 0
+        }
+      ],
+      "edges": [],
+      "locutions": [
+        {
+          "personID": 1,
+          "nodeID": 0
+        }
+      ],
+      "participants": [
+        {
+          "participantID": 1,
+          "firstname": "Default",
+          "surname": "Speaker"
+        }
+      ],
+      "schemefulfillments": [],
+      "descriptorfulfillments": []
+    },
+    "text": {
+      "txt": " Default Speaker <span class=\"highlighted\" id=\"0\">This is a sample argument text that will be processed by the turninator.</span>.<br><br>"
+    },
+    "dialog": false,
+    "OVA": {},
+    "ova": {}
+  };
+  
+  // And this is how long the request should take before deemed too slow:
+  const maxTimeToReturnInMilliseconds = 300;
+  
+  test("Response should match expected value", function () {
+    const receivedData = res.getBody();
+    expect(receivedData).to.deep.equal(expectedData);
+  });
+  
+  test(`Response time should be faster than ${maxTimeToReturnInMilliseconds} milliseconds`, function () {
+    expect(res.responseTime).to.be.below(maxTimeToReturnInMilliseconds);
+  });
+}

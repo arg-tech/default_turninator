@@ -1,0 +1,13 @@
+{
+  "AIF": {
+    "nodes": [],
+    "edges": [],
+    "locutions": [],
+    "participants": [],
+    "schemefulfillments": [],
+    "descriptorfulfillments": []
+  },
+  "text": "Alice: We should invest in education.\nBob: I think healthcare is more important.",
+  "dialog": true,
+  "OVA": {}
+}
