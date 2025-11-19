@@ -1,0 +1,13 @@
+{
+  "AIF": {
+    "nodes": [],
+    "edges": [],
+    "locutions": [],
+    "participants": [],
+    "schemefulfillments": [],
+    "descriptorfulfillments": []
+  },
+  "text": "This is a sample argument text that will be processed by the turninator.",
+  "dialog": false,
+  "OVA": {}
+}
