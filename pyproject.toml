@@ -1,0 +1,15 @@
+[project]
+name = "default-turninator"
+version = "0.1.0"
+description = "Default turninator for parsing arguments into dialog turns"
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "flask==3.0.3",
+    "flask-cors==5.0.0",
+    "flask-uploads==0.2.1",
+    "prometheus-flask-exporter==0.23.2",
+    "xaif-eval==0.0.9",
+    "gunicorn==25.1.0",
+]
